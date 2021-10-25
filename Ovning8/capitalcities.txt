@@ -1,0 +1,43 @@
+Tirana
+Andorra la Vella
+Wien
+Minsk
+Bryssel
+Sarajevo
+Sofia
+Zagreb
+Prag
+Köpenhamn
+Tallinn
+Helsingfors
+Paris
+Berlin
+Aten
+Budapest
+Reykjavik
+Dublin
+Rom
+Riga
+Vaduz
+Vilnius
+Luxembourg
+Valletta
+Chisinau
+Monte Carlo
+Podgorica
+Amsterdam
+Skopje
+Oslo
+Warszawa
+Lissabon
+Bukarest
+Moskva
+San Marino
+Belgrad
+Bratislava
+Ljubljana
+Madrid
+Stockholm
+Bern
+Kiev
+London
