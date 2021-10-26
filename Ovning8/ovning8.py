@@ -1,78 +1,78 @@
-ordliste = dict()
-with open("oving_1_rein_tekst.txt", "r", encoding="UTF8") as fila:
-    for index, linje in enumerate(fila, start=1):
-        ordene = linje.split()
-        for ordet in ordene:
-            ordet = ordet.lower()
-            if ordet not in ordliste:
-                ordliste[ordet] = index
-    for ordet in ordliste:
-        print(f"Ordet {ordet} framkommer först i linje {ordliste[ordet]}")
-        
-##############################################################################
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Oct 18 23:58:23 2021
 
-import random
-
-with open("capitalcities.txt", "r", encoding="UTF8") as capitals_file, open("countries.txt", "r", encoding="UTF8") as countries_file:
-    capitals = list()
-    countries = list()
-    for city in capitals_file:
-        city = city.strip()
-        capitals.append(city)
-        
-    for country in countries_file:
-        country = country.strip()
-        countries.append(country)
-
+@author: HP Envy
+"""
+with open("sporsmaalsfilen.txt", "r", encoding="UTF8") as file:
+    questions = list()
+    correct = list()
+    options = list()
+    for line in file:
+        elements = line.split(":")
+        elements = [element.strip() for element in elements]
+        questions.append(elements[0])
+        correct.append(elements[1])
+        options.append(elements[2])
+    options = [i.strip('][').split(', ') for i in options]
+    # data = [questions, correct, options]
+    
 class Quiz:
-    def __init__(self, capitals, for_user, correctcity, index):
-        self.capitals = capitals
-        self.for_user = for_user
-        self.correctcity = correctcity
-        self.index = index
+    def __init__(self, correct_answer, correct_answer_index, options):
+        self.correct_answer = correct_answer
+        self.correct_answer_index = correct_answer_index
+        self.options = options
     
-    def randoms(self):
-        capitals_ = self.capitals[:]
-        capitals_.remove(self.correctcity)
+    def korrekt_svar_tekst(self):
+        return print("\nKorrekt svar: ", self.correct_answer)
+    
+    def check1(self, answer1, answer2):
+        if answer1 == self.correct_answer_index:
+            print("\nSpelare 1: Korrekt")
 
-        random1 = random.choice(capitals_)
-        capitals_.remove(random1)
-        random2 = random.choice(capitals_)
-        shuffled_list = [random1, random2, self.correctcity]
-        random.shuffle(shuffled_list)
-        return shuffled_list
-    
-    def options(self, shuffled_list):
-        self.for_user.append(f"1. {shuffled_list[0]}")
-        self.for_user.append(f"\n2. {shuffled_list[1]}")
-        self.for_user.append(f"\n3. {shuffled_list[2]}")
-    
-    def check(self, shuffled_list, answer):
-        cities = [shuffled_list[0], shuffled_list[1], shuffled_list[2]]
-        for index, city in enumerate(cities):
-            if city == self.correctcity:
-                correctcity_index = index + 1
-                if answer == correctcity_index:
-                    print("Rätt!\n")
-                else:
-                    print("Fel! Huvudstaden är", self.correctcity + ".\n")
-        
+        if answer1 != self.correct_answer_index:
+            print("\nSpelare 1: Fel")
+
+        if answer2 == self.correct_answer_index: 
+            print("\nSpelare 2: Korrekt")
+
+        if answer2 != self.correct_answer_index:
+            print("\nSpelare 2: Fel")
+   
+            
     def __str__(self):
-        return f"{self.for_user[0]}{self.for_user[1]}{self.for_user[2]}"
-
-for index, country in enumerate(countries):
-    correctcity = capitals[index]
-    print("-------------------------------------------------------\nVad är", country + "s", "huvudstad?")
-    start = Quiz(capitals, list(), correctcity, index)
-    shuffled_list = start.randoms()
-    start.options(shuffled_list)
-    print(start)
-    try:
-        answer = int(input("Svar: "))
-        while answer > 3 or answer <= 0:
-            answer = int(input("Finns inte med i listan, försök igen: "))
-        start.check(shuffled_list, answer)
-    except ValueError:
-        print("Quizet avbryts...")
-        break
+        options = list()
+        for index, option in enumerate(self.options):
+            if index == 0:
+                option = "1. " + option
+                options.append(option)
+            else:
+                option = f"\n{1+index}. " + option
+                options.append(option)
+        options = "".join(options)
+        return f"{options}"
+    
+if __name__ == "__main__":
+    score1 = 0
+    score2 = 0
+    for index, question in enumerate(questions):
+        print("-------------------------------------------------------\n" + question)
+        correct_index = int(correct[index])
+        start = Quiz(options[index][correct_index], correct_index + 1, options[index])
+        print(start)
+        answer1 = int(input("Välj ett svarsalternativ för spelare 1: "))
+        answer2 = int(input("Välj ett svarsalternativ för spelare 2: "))
+        start.korrekt_svar_tekst()
+        start.check1(answer1, answer2)
+        
+        if answer1 == correct_index + 1:
+            score1 += 1
+            
+        if answer2 == correct_index + 1:
+            score2 += 1
+            
+        if index == len(questions) - 1:
+            print("Spelare 1 fick", score1, "rätt utav /" + str(len(questions)))
+            print("Spelare 2 fick", score2, "rätt utav /" + str(len(questions)))
+        
     
